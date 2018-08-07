@@ -1,0 +1,12 @@
+body { 
+	font-family: sans-serif; 
+	color: darkblue;
+}
+
+#editForm {
+	visibility: hidden;
+}
+
+@page {
+	margin: 0.75in;
+}

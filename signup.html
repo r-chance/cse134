@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="screenstyle.css" media="screen">
+    <title>Sign up for an account</title>
+    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-auth.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyAvCRHKcOCw-ewrhvBneLa_q6gWuIL5VyU",
+        authDomain: "b-website-70993.firebaseapp.com",
+        databaseURL: "https://b-website-70993.firebaseio.com",
+        projectId: "b-website-70993",
+        storageBucket: "b-website-70993.appspot.com",
+        messagingSenderId: "183195888057"
+      };
+      firebase.initializeApp(config);
+    </script>
+
+
+  </head>
+  <body>
+    <div class="banner">
+  	<h1>Sign up for a new account</h1>
+    <h2>For Homework 3</h2><br><br>
+    </div>
+  	<!-- <form name="signup" method="post" onsubmit="validateInput()"> -->
+  	  <p style="font-size: 18px">Enter a username or email address</p>
+  	  <input type="text" name="username" id="username" required="required"><br>
+  	  <p style="font-size: 18px">Enter a password</p>
+  	  <input type="password" name="password" id="password" required="required"><br>
+  	  <p style="font-size: 18px">Confirm your password</p>
+  	  <input type="password" name="confirm" id="confirm" required="required"><br><br>
+  	  <input type="submit" value="Submit" onclick="validateInput()">
+  	
+
+    <script>
+      
+      function validateInput() {
+        var pw1 = document.getElementById("password").value;
+        var pw2 = document.getElementById("confirm").value;
+        var user = document.getElementById("username").value;
+
+        var success = true;
+
+        if(pw1 != pw2) {
+          alert("Passwords do not match.");
+          success = false;
+        }
+
+        firebase.auth().createUserWithEmailAndPassword(user,pw1).then(function() {
+          window.location = "issueList.html";
+
+        }, function(error) {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          console.log(errorCode);
+          console.log(errorMessage);
+          alert(errorMessage);
+        })
+
+       /* firebase.auth().createUserWithEmailAndPassword(user,pw1).catch(function(error) {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          console.log(errorCode);
+          console.log(errorMessage);
+          alert(errorMessage);
+          success = false;
+          }).then(function() {
+            window.location = "issueList.html";
+          });
+*/
+          
+        //alert(success);
+        //if(success)
+        //  window.location = "issueList.html";
+      } 
+    </script>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+<!-- This page contains jpg, png, svg, gif, and webp images-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<title>Media Issue</title>
+	<meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="screenstyle.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="printstyle.css" media="print">  
+  </head>
+  <body>
+    <div class="banner">
+  	  <h1>Issue Name: Media</h1><br>
+  	  <h2>Issue Type: Feature</h2><br>
+  	</div>
+    <br>
+  	<p>Issue Description:</p>
+  	<p>Webp image doesn't render in my browser</p>
+
+  	<picture>
+      <source media="(max-width: 400px)" srcset="http://planetary.s3.amazonaws.com/assets/images/people/20121108_carl-sagan_t233.jpg">
+      <source media="(max-width: 800px)" srcset="http://www.amadesign.hr/wp-content/themes/blankslate/images/quotes/sagan.png" alt="Carl Sagan png image">
+      <source media="(max-width: 1000px)" srcset="https://upload.wikimedia.org/wikipedia/commons/c/c1/Carl_Sagan_Signature.svg" alt="Carl Sagan's signature in svg">
+      <source media="(max-width: 1200px)" srcset="https://i.giphy.com/EhzWrhGlYuvug.gif" alt="Carl Sagan GIF">
+      <img src="https://www.gstatic.com/webp/gallery/4.sm.webp" alt="Couldn't find a webp image of carl, so I have to use this.">
+    </picture>
+  </body>
+</html>

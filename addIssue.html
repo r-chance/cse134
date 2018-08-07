@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Add Issue</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="screenstyle.css" media="screen">    
+    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-storage.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyAvCRHKcOCw-ewrhvBneLa_q6gWuIL5VyU",
+        authDomain: "b-website-70993.firebaseapp.com",
+        databaseURL: "https://b-website-70993.firebaseio.com",
+        projectId: "b-website-70993",
+        storageBucket: "b-website-70993.appspot.com",
+        messagingSenderId: "183195888057"
+      };
+      firebase.initializeApp(config);
+    </script>
+
+  <script>
+    
+    if('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js').then(function(response) {
+
+        console.log('Service worker registered', response);
+      }, function(error) {
+
+        console.log('Service worker failed to register', error);
+      })
+    }
+
+  </script>
+
+  </head>
+  <body>
+    <div class="banner">
+      <h1>Add Issue</h1>
+      <h2>For Homework 3</h2><br><br>
+    </div>
+    <form id="issueForm">
+      <fieldset><legend>Please complete every field</legend>
+  	  <label>Issue Title<br><input type="text" name="issueTitle" id="issueTitle" required></label><br><br>
+  	  <label>Issue Type</label><br><select name="issueType" id="issueType">
+  	  	  <optgroup label="First few options">
+  	  	  	<option value="Heading tags">Heading and section issues</option>
+  	  	  	<option value="text tags">Text issues</option>
+  	  	  	<option value="image tags">Image issues</option>
+  	  	  </optgroup>
+  	  	  <optgroup label="Next few options">
+  	  	  	<option value="media tags">Media issues</option>
+  	  	  	<option value="iframe tag">Embedded content issues</option>
+  	  	  </optgroup>
+  	  	  <optgroup label="Last few options">
+  	  	  	<option value="forms">Form issues</option>
+  	  	  	<option value="old tags">Deprecated content issues</option>
+  	  	  </optgroup>
+  	  	</select><br><br>
+  	  <label>Issue Description<br><input list="mockdata" name="issueDesc" id="issueDesc" required>
+  	  	<datalist id="mockdata">
+  	  	  <option value="generic description"></option>
+  	  	  <option value="detailed description"></option>
+  	  	  <option value="bad description"></option>
+  	  	  <option value="good description"></option>
+  	  	</datalist></label><br><br>
+  	  <label>Issue Priority<br><input type="range" name="issuePri" min="1" max="10" step="1" value="1" onload="rangeValue(this)" onchange="rangeValue(this)"></label><div>Priority:<span id=priority>1</span>&nbsp;&nbsp;<span>(10 = highest priority)</span></div><br><br>
+  	  <label>Issue Attachment<br><input type="file" name="issueAttach" id="issueAttach"></label><br><br>
+  	  <input type="button" name="submit" value="Submit" onclick="addIssue()">
+      <input type="reset" name="reset">
+  	</fieldset>
+	</form>
+
+    <script>
+      // Sets value of slider to be displayed
+   	  function rangeValue(range) {
+  	    var value = range.value;
+  	    document.getElementById("priority").innerHTML = value;
+  	  }
+    </script>
+
+    <script>
+      
+      // url for JSON file
+      const url = "http://localhost:3000/issues";
+
+      // add issue to issue list
+      function addIssue() {
+
+        // url of this page
+        var thisUrl = new URL(window.location.href);
+        // get id parameter
+        var id = thisUrl.searchParams.get("id");
+        //console.log(id);
+
+        var name = document.getElementById("issueTitle").value;
+        var type = document.getElementById("issueType").value;
+        var desc = document.getElementById("issueDesc").value;
+        var resolved = false;
+
+        // get attachment if any
+        //var attach = document.getElementById("issueAttach").files[0];
+
+        //var storage = firebase.storage().ref("img/"+id+"/"+attach.name);
+        //storage.put(attach);
+
+
+        // create js object
+        var messageBodyObject = {};
+        messageBodyObject["id"] = parseInt(id);
+        messageBodyObject["issueName"] = name;
+        messageBodyObject["issueURL"] = "issue.html?id="+id;
+        messageBodyObject["issueType"] = type;
+        messageBodyObject["issueDescription"] = desc;
+        messageBodyObject["resolved"] = resolved;
+
+        // convert object to string
+        var messageBodyString = JSON.stringify(messageBodyObject);
+
+        // create new XHR request, synchronously to stay within origin for POST
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', url, false);
+
+        // send POST request
+        xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+        xhr.send(messageBodyString);
+
+        // Navigate to issue list
+        window.location = "issueList.html";
+
+      }
+
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Issue List</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="screenstyle.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="printstyle.css" media="print">
+  <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-database.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyAvCRHKcOCw-ewrhvBneLa_q6gWuIL5VyU",
+      authDomain: "b-website-70993.firebaseapp.com",
+      databaseURL: "https://b-website-70993.firebaseio.com",
+      projectId: "b-website-70993",
+      storageBucket: "b-website-70993.appspot.com",
+      messagingSenderId: "183195888057"
+    };
+    firebase.initializeApp(config);
+  </script>
+
+  <script>
+    
+    if('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js').then(function(response) {
+
+        console.log('Service worker registered', response);
+      }, function(error) {
+
+        console.log('Service worker failed to register', error);
+      })
+    }
+
+  </script>
+
+  <style>
+    button {
+      width: 100%;
+    }
+  </style>
+
+</head>
+  <div class="banner">
+    <h1>Issue List</h1>
+    <h2>For Homework 3</h2><br><br>
+  </div>
+  <table id="issueTable" border="1" width="100%">
+  	<caption>This table contains a list of user-specified issues</caption>
+  	<colgroup>
+  		 <col style="width: 100px; background-color: yellow" >
+  		<col span="5" style="background-color: powderblue">
+  	</colgroup>
+  	<thead>
+  	  <tr>
+        <th><button id="addIssue" onclick="addIssue()">Add Issue</button></th>
+  	    <th><u>Issue Id</u></th>
+  	    <th><u>Issue Name</u></th>
+  	    <th><u>Issue Type</u></th>
+  	    <th><u>Issue Description</u></th>
+        <th><u>Resolved</u></th>
+  	  </tr>
+  	</thead>
+  	<tbody id="issueTableBody">
+  	</tbody>
+
+  </table><br>
+
+  <noscript><b>This page requires Javascript to modify or delete issues</b></noscript>
+
+  <form id="editForm">
+    <h3 value="" id="issueRow">Edit Issue</h3>
+    <div>Issue Name</div>
+    <input type="text" name="Issue Name" id="issueName"><br><br>
+    <div>Issue Type</div>
+    <input type="text" name="Issue Type" id="issueType"><br><br>
+    <div>Issue Description</div>
+    <input type="text" name="Issue Description" id="issueDesc"><br>
+    <br>
+    <input type="button" name="Submit" value="Edit entry" onclick="replaceData()">
+  </form>
+
+  <template id="addIssueTemplate">
+    <tr><td><button onclick="copyData(this)">edit</button> <button onclick="deleteIssue(this)">delete</button></td>
+      <td id="tempIssueID"></td><td id="tempIssueName"><a href="sectionIssue.html" id="tempIssueURL"></a></td><td id="tempIssueType"></td><td id="tempIssueDesc"></td><td><input type="checkbox" name="resolved" value="resolved" id="tempIssueResolved"></td>
+    </tr>
+  </template>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', function() {
+      fetchIssues();
+    });
+
+    const url = 'http://localhost:3000/issues';
+
+    function fetchIssues() {
+
+      // URL of JSON file
+      //var url = 'http://localhost:3000/issues';
+
+      // Fetch data and parse as JSON
+      fetch(url).then(response => response.json()).then(function(response) {
+        renderIssues(response);
+      });
+    }
+
+    function renderIssues(response) {
+      var table = document.getElementById("issueTableBody");
+
+      // loop through JSON array and add each object to table
+      for(var i = 0; i < response.length; i++) {
+
+        // clone a template row
+        var newRow = document.getElementById("addIssueTemplate").content.cloneNode(true);
+
+        // populate template row with JSON values
+        newRow.childNodes[1].childNodes[2].innerHTML = response[i].id;
+        newRow.childNodes[1].childNodes[3].childNodes[0].innerHTML = response[i].issueName;
+        newRow.childNodes[1].childNodes[3].childNodes[0].href = response[i].issueURL;
+        newRow.childNodes[1].childNodes[4].innerHTML = response[i].issueType;
+        newRow.childNodes[1].childNodes[5].innerHTML = response[i].issueDescription;
+        newRow.childNodes[1].childNodes[6].childNodes[0].checked = response[i].resolved;
+
+        // append new row to table body
+        table.appendChild(newRow);
+      }
+    }
+
+    // delete a record
+    function deleteIssue(x) {
+
+      // URL of JSON file
+     // var url = 'http://localhost:3000/issues';
+
+      // id of record
+      var id = x.parentNode.parentNode.childNodes[2].innerHTML;
+
+      // Confirm user wants to delete record
+      var confirmMessage = "Are you sure you want to delete this issue?"
+      if(!confirm(confirmMessage)) return;
+      
+      // delete record in table
+      var row = x.parentNode.parentNode.rowIndex;
+      document.getElementById("issueTable").deleteRow(row);
+
+      // delete record in db
+      var xhr = new XMLHttpRequest();
+      xhr.open('DELETE', url+'/'+id, true);
+      xhr.send();
+      
+    }
+
+    // copy values from record to form for convenient editing
+    function copyData(formRow) {
+      var form = document.getElementById("editForm");
+      form.style.visibility = "visible";
+
+      var row = formRow.parentNode.parentNode;
+      var num = row.childNodes[2].childNodes[0].textContent;
+      var name = row.childNodes[3].childNodes[0].textContent;
+      var type = row.childNodes[4].childNodes[0].textContent;
+      var desc = row.childNodes[5].childNodes[0].textContent;
+
+      document.getElementById("issueRow").value = row;
+      document.getElementById("issueName").value = name;
+      document.getElementById("issueType").value = type;
+      document.getElementById("issueDesc").value = desc;
+       
+    }
+
+    // edit record in table and db
+    function replaceData() {
+
+      // url of JSON file
+     // var url = "http://localhost:3000/issues";
+
+      // values from form fields
+      var row = document.getElementById("issueRow").value;
+      var name = document.getElementById("issueName").value;
+      var issueURL = row.childNodes[3].childNodes[0].href;
+      var type = document.getElementById("issueType").value;
+      var desc = document.getElementById("issueDesc").value;
+      var resolved = row.childNodes[6].childNodes[0].checked;
+      console.log(resolved);
+
+      // replace values in table row with new values
+      row.childNodes[3].childNodes[0].textContent = name;
+      row.childNodes[4].childNodes[0].textContent = type;
+      row.childNodes[5].childNodes[0].textContent = desc;
+
+      // hide edit form
+      document.getElementById("editForm").style.visibility = "hidden";
+
+      // edit record in db
+      var id = row.childNodes[2].childNodes[0].textContent;
+  
+      // create new XHR request
+      var xhr = new XMLHttpRequest();
+      xhr.open('PUT', url+"/"+id, true);
+
+      // generate message body
+      var messageBodyObject = {};
+      messageBodyObject["id"] = parseInt(id);
+      messageBodyObject["issueName"] = name;
+      messageBodyObject["issueURL"] = issueURL;
+      messageBodyObject["issueType"] = type;
+      messageBodyObject["issueDescription"] = desc;
+      messageBodyObject["resolved"] = resolved;
+
+      // convert object to string
+      var messageBodyString = JSON.stringify(messageBodyObject);
+
+      // send PUT request
+      xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+      xhr.send(messageBodyString);
+    }
+
+    // add issue to list
+    function addIssue() {
+
+      // create new issue ID
+      var table = document.getElementById("issueTableBody");
+      var len = table.childNodes.length;
+
+      if(len > 1) {
+        var lastID = table.childNodes[len-2].childNodes[2].childNodes[0].textContent;
+
+        // navigate to addIssue page and pass in new issue id
+        window.location = "addIssue.html?"+"id="+(parseInt(lastID)+1);
+      }
+      else {
+        window.location = "addIssue.html?id=1";
+      }
+    }
+  </script>
+
+</html>

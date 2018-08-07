@@ -1,0 +1,52 @@
+{
+  "issues": [
+    {
+      "id": 1,
+      "issueName": "Headings and Sections",
+      "issueURL": "sectionIssue.html",
+      "issueType": "Headings and sections issues",
+      "issueDescription": "Section of Text cannot be translated",
+      "resolved": false
+    },
+    {
+      "id": 2,
+      "issueName": "Boiler Plate Text",
+      "issueURL": "textIssue.html",
+      "issueType": "Text issues",
+      "issueDescription": "Text appears garbled",
+      "resolved": false
+    },
+    {
+      "id": 3,
+      "issueName": "Media",
+      "issueURL": "mediaIssue.html",
+      "issueType": "Image issues",
+      "issueDescription": "WebP image doesn't render in browser",
+      "resolved": true
+    },
+    {
+      "id": 4,
+      "issueName": "Embedded Content",
+      "issueURL": "http://localhost:5000/iframeIssue.html",
+      "issueType": "Embedded content issues",
+      "issueDescription": "Iframe recursion doesn't appear to work",
+      "resolved": false
+    },
+    {
+      "id": 5,
+      "issueName": "test1",
+      "issueURL": "http://localhost:5000/issue.html?id=5",
+      "issueType": "Heading tags",
+      "issueDescription": "testing",
+      "resolved": false
+    },
+    {
+      "id": 6,
+      "issueName": "ss",
+      "issueURL": "issue.html?id=6",
+      "issueType": "Heading tags",
+      "issueDescription": "ss",
+      "resolved": false
+    }
+  ]
+}

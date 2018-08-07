@@ -1,0 +1,49 @@
+<!-- This page contains the following elements: output, progress, meter, noscript, dialog, template, canvas -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<title>Misc Issue</title>
+	<meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="screenstyle.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="printstyle.css" media="print">  
+  </head>
+  <body>
+    <div class="banner">
+  	  <h1>Issue Name: Miscellanous Issue</h1>
+  	  <h2>Issue Type: random</h2>
+  	</div>
+  	<br>
+  	<p>Here is an intense calculation...</p>
+  	<p>Progress: <progress id="progress" max="100"><span>0</span>%</progress></p>
+  	<output id="result"></output>
+  	<script>
+  		var x = 1;
+  		document.getElementById('result').value = x;
+  		document.getElementById('progress').value = 100;
+  	</script>
+  	<noscript>
+  		<input type="submit" name="noscript" value="Push the button">
+  	</noscript><br>
+  	<p>This meter is half empty: <meter min="0" max="10" value="5" title="Half empty meter"></meter></p>
+  	
+  	<dialog open>
+  		<h2>A dialog box</h2>
+  		<p>Do you want to interact with me?</p>
+  		<button>Yes</button>
+  	</dialog>
+  	<p>This next line is hidden:</p>
+  	<template>
+  		<p>A hidden line that can be rendered with JS</p>
+  	</template>
+  	<p>A canvas:</p>
+  	<canvas id="canvas"></canvas>
+  	<script>
+  	  var canvas = document.getElementById("canvas");
+  	  var context = canvas.getContext("2d");
+  	  context.fillStyle = 'rgb(100,30,100)';
+  	  context.font = '30px courier';
+  	  context.strokeText('Almost Done', 50, 50);
+  	  //context.fillRect(0,0,30,30);
+  	 </script>
+  </body>
+</html>

@@ -1,0 +1,52 @@
+/* Using Google font Exo 2 */
+@import url('https://fonts.googleapis.com/css?family=Exo+2');
+
+body {
+	background-color: lightgrey;
+
+	/*font-family: sans-serif; */
+	color: darkblue}
+
+h3 {
+	align-content: center;
+}
+
+.banner {
+	background: linear-gradient(powderblue, red, yellow, red, powderblue, lightgrey);
+	margin: -10px;
+	padding: 10px;
+
+}
+
+.banner > h1,h2 {
+	/*text-align: center;*/
+	justify-content: center;
+	display: flex;
+}
+#editForm {
+	visibility: hidden;
+}
+
+@media (max-width: 800px) {
+	h1 {
+		font-size: 22px;
+	}
+	h2 {
+		font-size: 16px;
+	}
+	td, caption, th {
+		font-size: 14px;
+	}
+}
+
+@media (max-width: 360px) {
+	h1 {
+		font-size: 16px;
+	}
+	h2 {
+		font-size: 12px;
+	}
+	td, caption, th {
+		font-size: 10px;
+	}
+}
